@@ -5,13 +5,18 @@ using UnityEngine;
 public class DrawLine : MonoBehaviour
 {
     [SerializeField] private LineRenderer line;
-    private bool inGreen = false;
+
+    internal bool inGreen = false;
+    private Color redColor, greenColor;
+
     void Start()
     {
         //line = GetComponent<LineRenderer>();
+        redColor = new Color(Color.red.r, Color.red.g, Color.red.b, 0.5f);
+        greenColor = new Color(Color.green.r, Color.green.g, Color.green.b, 0.5f);
     }
 
-    void FixedUpdate()
+    void Update()
     {
         DetectHit(line.transform.position, 1000, -transform.up);
     }
@@ -28,13 +33,17 @@ public class DrawLine : MonoBehaviour
         {
             if (hit.collider.CompareTag("Trampoline"))
             {
-                if (Vector3.Distance(hit.point, hit.collider.transform.position) < 1.5f)
+                if (Vector3.Distance(hit.point, hit.collider.transform.position) < 1f)
                 {
-                    line.SetColors(Color.white, Color.green);
+                    line.startColor = greenColor;
+                    line.endColor = greenColor;
+                    inGreen = true;
                 }
                 else
                 {
-                    line.SetColors(Color.white, Color.red);
+                    line.startColor = redColor;
+                    line.endColor = redColor;
+                    inGreen = false;
                 }
             }
 
