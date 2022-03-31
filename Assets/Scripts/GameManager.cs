@@ -21,6 +21,7 @@ namespace JumpRace
         [SerializeField] private GameObject perfectText;
         [SerializeField] private GameObject longJumpText;
         [SerializeField] private Image levelBar;
+        [SerializeField] private GameObject[] levelSplines;
 
         public bool gameOver;
         public int currentLevel;
@@ -31,6 +32,7 @@ namespace JumpRace
             Instance = this;
             GameObject.Find("HCLevelManager").GetComponent<HCLevelManager>().Init();
             GameObject.Find("HCLevelManager").GetComponent<HCLevelManager>().GenerateCurrentLevel();
+            levelSplines[GameObject.Find("HCLevelManager").GetComponent<HCLevelManager>()._levelIndex].SetActive(true);
         }
         private void Start()
         {

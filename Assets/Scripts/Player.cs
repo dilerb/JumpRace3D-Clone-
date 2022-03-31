@@ -135,8 +135,6 @@ namespace JumpRace
                 }
                 else if (collision.collider.GetComponent<Trampoline>().nodeNumber < lastJumpNode)
                 {
-                    lastJumpNode = collision.collider.GetComponent<Trampoline>().nodeNumber;
-
                     if (lastJumpNode - collision.collider.GetComponent<Trampoline>().nodeNumber > 1)
                     {
                         //long jump!
@@ -147,6 +145,8 @@ namespace JumpRace
                         //perfect!
                         GameManager.Instance.OpenPerfectText();
                     }
+
+                    lastJumpNode = collision.collider.GetComponent<Trampoline>().nodeNumber;
                 }
 
                 GameManager.Instance.SetLevelBar(lastJumpNode);

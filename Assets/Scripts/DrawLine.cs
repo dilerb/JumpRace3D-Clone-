@@ -33,7 +33,7 @@ public class DrawLine : MonoBehaviour
         {
             if (hit.collider.CompareTag("Trampoline"))
             {
-                if (Vector3.Distance(hit.point, hit.collider.transform.position) < 1f)
+                if (Vector3.Distance(hit.point, hit.collider.transform.position) < 1.1f)
                 {
                     line.startColor = greenColor;
                     line.endColor = greenColor;

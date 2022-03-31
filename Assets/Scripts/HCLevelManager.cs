@@ -5,7 +5,7 @@ namespace JumpRace
     public class HCLevelManager : MonoBehaviour
     {
         [SerializeField] private GameObject[] _levelPrefabs;
-        [SerializeField] private int _levelIndex = 0;
+        [SerializeField] internal int _levelIndex = 0;
         [SerializeField] private bool _forceLevel = false;
 
         private int _globalLevelIndex = 0;
