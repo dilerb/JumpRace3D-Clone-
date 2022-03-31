@@ -18,6 +18,11 @@ namespace JumpRace
         [SerializeField] private float turnRate = 1;
         [SerializeField] internal GameObject line;
         [SerializeField] internal Animator animator;
+        [SerializeField] private ParticleSystem drownEffect;
+        [SerializeField] private Camera _cam;
+        private float swerveAmount = 0;
+        private bool lookTrampoline = false;
+        private Vector3 nextTrampolinePos;
 
         internal bool stopPlayer = false;
         void Start()
@@ -32,7 +37,10 @@ namespace JumpRace
 
             if (Input.touchCount > 0)
             {
+                lookTrampoline = false;
+
                 Touch touch = Input.GetTouch(0);
+
                 if (touch.phase == TouchPhase.Began)
                 {
                     touchPosX = touch.position.x;
@@ -42,16 +50,22 @@ namespace JumpRace
                 {
                     holdingFinger = false;
                 }
-                else
+                else if (touch.phase == TouchPhase.Moved)
                 {
-                    if (touch.position.x - touchPosX > 0)
-                    {
-                        RotatePlayer(1);
-                    }
-                    else
-                    {
-                        RotatePlayer(-1);
-                    }
+                    swerveAmount = touch.position.x - touchPosX;
+                    //if (touch.position.x - touchPosX > 0)
+                    //{
+                    //    RotatePlayer(1);
+                    //}
+                    //else
+                    //{
+                    //    RotatePlayer(-1);
+                    //}
+                    RotatePlayer(swerveAmount);
+                }
+                else if (touch.phase == TouchPhase.Stationary)
+                {
+                    touchPosX = touch.position.x;
                 }
             }
 
@@ -59,18 +73,31 @@ namespace JumpRace
             {
                 MoveForward();
             }
+            else
+            {
+                if (lookTrampoline)
+                    LookNextTrampoline();
+            }
 
             //GravityEffect();
         }
 
-        private void RotatePlayer(int d)
+        private void RotatePlayer(float d)
         {
             transform.Rotate(Vector3.up * d * Time.deltaTime * turnRate);
         }
-
+        private void LookNextTrampoline()
+        {
+            //transform.LookAt(new Vector3(Mathf.Lerp(transform.position.x, nextTrampolinePos.x, Time.deltaTime * 1000), transform.position.y, nextTrampolinePos.z));
+            transform.rotation = new Quaternion(transform.rotation.x, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(nextTrampolinePos - transform.position), Time.deltaTime * 2).y,transform.rotation.z,transform.rotation.w);
+            //if (transform.position.y == nextTrampolinePos.y)
+            //{
+            //    lookTrampoline = false;
+            //}
+        }
         private void MoveForward()
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + (forwardSpeed * Time.deltaTime));
+            transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
         }
 
         //private void GravityEffect()
@@ -83,14 +110,22 @@ namespace JumpRace
             if (collision.collider.CompareTag("Trampoline"))
             {
                 PlayerAnimation();
-
+           
                 if (collision.collider.GetComponent<Trampoline>()._type == Trampoline.TrampolineType.LongJump)
                 {
+                    rb.Sleep();
                     rb.AddForce(Vector3.up * jumpFactor * 2, ForceMode.Force);
                 }
                 else
                 {
+                    rb.Sleep();
                     rb.AddForce(Vector3.up * jumpFactor, ForceMode.Force);
+
+                    if (collision.collider.GetComponent<Trampoline>().nodeNumber > 1)
+                    {
+                        nextTrampolinePos = collision.collider.transform.parent.GetChild(collision.collider.transform.GetSiblingIndex() + 1).position;
+                        lookTrampoline = true;
+                    }
                 }
 
                 if (lastJumpNode == 0)
@@ -119,6 +154,17 @@ namespace JumpRace
             else if (collision.collider.CompareTag("Finish"))
             {
                 stopPlayer = true;
+                GameManager.Instance.StopGame();
+                GameManager.Instance.OpenWinPanel();
+            }
+            else if (collision.collider.CompareTag("Water"))
+            {
+                stopPlayer = true;
+                Instantiate(drownEffect, transform.position, Quaternion.identity);
+                _cam.transform.SetParent(null);
+                gameObject.SetActive(false);
+                GameManager.Instance.StopGame();
+                GameManager.Instance.OpenLosePanel();
             }
         }
 
