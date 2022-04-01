@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Trampoline
   - Water
+  - TrampolineParent
   layers:
   - Default
   - TransparentFX

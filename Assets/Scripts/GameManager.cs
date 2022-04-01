@@ -22,6 +22,7 @@ namespace JumpRace
         [SerializeField] private GameObject longJumpText;
         [SerializeField] private Image levelBar;
         [SerializeField] private GameObject[] levelSplines;
+        [SerializeField] private GameObject AI1, AI2;
 
         public bool gameOver;
         public int currentLevel;
@@ -41,6 +42,10 @@ namespace JumpRace
             currentLevel = GetLevel();
             SetLevel();
             StopGame();
+
+            Physics.IgnoreCollision(AI1.GetComponent<BoxCollider>(), player.GetComponent<BoxCollider>());
+            Physics.IgnoreCollision(AI2.GetComponent<BoxCollider>(), player.GetComponent<BoxCollider>());
+            Physics.IgnoreCollision(AI1.GetComponent<BoxCollider>(), AI2.GetComponent<BoxCollider>());
         }
         private void SetLevel()
         {
@@ -66,18 +71,16 @@ namespace JumpRace
         public void StartGame()
         {
             gameOver = false;
-            player.GetComponent<Player>().stopPlayer = false;
-            player.GetComponent<Rigidbody>().useGravity = true;
-            player.GetComponent<Player>().line.SetActive(true);
-            player.GetComponent<Player>().animator.enabled = true;
+            player.GetComponent<Player>().StartFalling();
+            AI1.GetComponent<JumperAI>().StartFalling();
+            AI2.GetComponent<JumperAI>().StartFalling();
         }
         public void StopGame()
         {
             gameOver = true;
-            player.GetComponent<Player>().stopPlayer = true;
-            player.GetComponent<Rigidbody>().useGravity = false;
-            player.GetComponent<Player>().line.SetActive(false);
-            player.GetComponent<Player>().animator.enabled = false;
+            player.GetComponent<Player>().StopFalling();
+            AI1.GetComponent<JumperAI>().StopFalling();
+            AI2.GetComponent<JumperAI>().StopFalling();
         }
         public void OpenLosePanel()
         {

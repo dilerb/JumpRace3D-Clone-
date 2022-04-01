@@ -7,7 +7,6 @@ namespace JumpRace
 {
     public class Player : MonoBehaviour
     {
-        private Rigidbody rb;
         private bool holdingFinger = false;
         private float touchPosX = 0f;
         private int lastJumpNode = 0;
@@ -20,16 +19,12 @@ namespace JumpRace
         [SerializeField] internal Animator animator;
         [SerializeField] private ParticleSystem drownEffect;
         [SerializeField] private Camera _cam;
+        [SerializeField] private Rigidbody rb;
         private float swerveAmount = 0;
         private bool lookTrampoline = false;
         private Vector3 nextTrampolinePos;
 
         internal bool stopPlayer = false;
-        void Start()
-        {
-            rb = GetComponent<Rigidbody>();
-        }
-
         private void Update()
         {
             if (stopPlayer)
@@ -53,14 +48,6 @@ namespace JumpRace
                 else if (touch.phase == TouchPhase.Moved)
                 {
                     swerveAmount = touch.position.x - touchPosX;
-                    //if (touch.position.x - touchPosX > 0)
-                    //{
-                    //    RotatePlayer(1);
-                    //}
-                    //else
-                    //{
-                    //    RotatePlayer(-1);
-                    //}
                     RotatePlayer(swerveAmount);
                 }
                 else if (touch.phase == TouchPhase.Stationary)
@@ -181,6 +168,19 @@ namespace JumpRace
                 animator.Play("Flip2");
             }
         }
+        public void StartFalling()
+        {
+            stopPlayer = false;
+            rb.useGravity = true;
+            line.SetActive(true);
+            animator.enabled = true;
+        }
+        public void StopFalling()
+        {
+            stopPlayer = true;
+            rb.useGravity = false;
+            line.SetActive(false);
+            animator.enabled = false;
+        }
     }
-
 }
