@@ -42,11 +42,11 @@ namespace JumpRace
 
         private void LookNextTrampoline()
         {
-            transform.LookAt(new Vector3(nextTrampolinePos.x, transform.position.y, nextTrampolinePos.z));
-            //transform.rotation = new Quaternion(transform.rotation.x, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(nextTrampolinePos - transform.position), Time.deltaTime * 2).y, transform.rotation.z, transform.rotation.w);
+            transform.rotation = new Quaternion(transform.rotation.x, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(nextTrampolinePos - transform.position), Time.deltaTime * 10).y, transform.rotation.z, transform.rotation.w);
         }
         IEnumerator MoveForward(Vector3 target)
         {
+            LookNextTrampoline();
             yield return transform.DOJump(target, 1, 1, 1.5f).WaitForCompletion();
             rb.useGravity = true;
 
@@ -57,7 +57,6 @@ namespace JumpRace
             if (collision.collider.CompareTag("Trampoline"))
             {
                 PlayerAnimation();
-                LookNextTrampoline();
 
                 if (collision.collider.GetComponent<Trampoline>()._type == Trampoline.TrampolineType.LongJump)
                 {
@@ -92,15 +91,21 @@ namespace JumpRace
                     rb.useGravity = true;
                 }
             }
-            else if (collision.collider.CompareTag("Finish"))
-            {
-                StopFalling();
-            }
             else if (collision.collider.CompareTag("Water"))
             {
                 StopFalling();
                 //Instantiate(drownEffect, transform.position, Quaternion.identity);
                 gameObject.SetActive(false);
+            }
+        }
+
+        private void OnTriggerEnter(Collider collider)
+        {
+            if (collider.CompareTag("Finish"))
+            {
+                StopFalling();
+                animator.enabled = true;
+                animator.Play("Idle");
             }
         }
 

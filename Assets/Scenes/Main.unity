@@ -2580,10 +2580,10 @@ RectTransform:
   m_Father: {fileID: 1862063039}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 30}
+  m_SizeDelta: {x: 134, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &730822704
 MonoBehaviour:
@@ -6662,7 +6662,7 @@ MonoBehaviour:
   gravityFactor: 2
   jumpFactor: 500
   forwardSpeed: 5
-  turnRate: 0.5
+  turnRate: 0.01
   line: {fileID: 987101904}
   animator: {fileID: 87780164}
   drownEffect: {fileID: 19873706, guid: e2550dae06524a94bbc4bcdf375a88b9, type: 3}
@@ -6713,10 +6713,10 @@ RectTransform:
   m_Father: {fileID: 2032773801}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 30}
+  m_SizeDelta: {x: 134, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2022864532
 MonoBehaviour:

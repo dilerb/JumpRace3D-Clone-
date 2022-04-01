@@ -71,7 +71,7 @@ namespace JumpRace
 
         private void RotatePlayer(float d)
         {
-            transform.Rotate(Vector3.up * d * Time.deltaTime * turnRate);
+            transform.Rotate(Vector3.up * d * turnRate);
         }
         private void LookNextTrampoline()
         {
@@ -138,12 +138,6 @@ namespace JumpRace
 
                 GameManager.Instance.SetLevelBar(lastJumpNode);
             }
-            else if (collision.collider.CompareTag("Finish"))
-            {
-                stopPlayer = true;
-                GameManager.Instance.StopGame();
-                GameManager.Instance.OpenWinPanel();
-            }
             else if (collision.collider.CompareTag("Water"))
             {
                 stopPlayer = true;
@@ -152,6 +146,18 @@ namespace JumpRace
                 gameObject.SetActive(false);
                 GameManager.Instance.StopGame();
                 GameManager.Instance.OpenLosePanel();
+            }
+        }
+
+        private void OnTriggerEnter(Collider collider)
+        {
+            if (collider.CompareTag("Finish"))
+            {
+                stopPlayer = true;
+                GameManager.Instance.StopGame();
+                GameManager.Instance.OpenWinPanel();
+                animator.enabled = true;
+                animator.Play("Idle");
             }
         }
 
