@@ -23,8 +23,13 @@ namespace JumpRace
         private float swerveAmount = 0;
         private bool lookTrampoline = false;
         private Vector3 nextTrampolinePos;
+        private GameObject finishObj;
 
         internal bool stopPlayer = false;
+        private void Start()
+        {
+            finishObj = GameObject.FindGameObjectWithTag("Finish");
+        }
         private void Update()
         {
             if (stopPlayer)
@@ -84,15 +89,11 @@ namespace JumpRace
         private void RotatePlayer(float d)
         {
             transform.Rotate(Vector3.up * d * turnRate * Time.deltaTime);
+            //transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, d * turnRate * Time.deltaTime, transform.localEulerAngles.z);
         }
         private void LookNextTrampoline()
         {
-            //transform.LookAt(new Vector3(Mathf.Lerp(transform.position.x, nextTrampolinePos.x, Time.deltaTime * 1000), transform.position.y, nextTrampolinePos.z));
             transform.rotation = new Quaternion(transform.rotation.x, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(nextTrampolinePos - transform.position), Time.deltaTime * 2).y,transform.rotation.z,transform.rotation.w);
-            //if (transform.position.y == nextTrampolinePos.y)
-            //{
-            //    lookTrampoline = false;
-            //}
         }
         private void MoveForward()
         {
@@ -123,6 +124,11 @@ namespace JumpRace
                     if (collision.collider.GetComponent<Trampoline>().nodeNumber > 1)
                     {
                         nextTrampolinePos = collision.collider.transform.parent.GetChild(collision.collider.transform.GetSiblingIndex() + 1).position;
+                        lookTrampoline = true;
+                    }
+                    else
+                    {
+                        nextTrampolinePos = new Vector3(finishObj.transform.position.x, finishObj.transform.position.y + 5f, finishObj.transform.position.z);
                         lookTrampoline = true;
                     }
                 }

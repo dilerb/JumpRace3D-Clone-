@@ -42,7 +42,8 @@ namespace JumpRace
 
         private void LookNextTrampoline()
         {
-            transform.rotation = new Quaternion(transform.rotation.x, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(nextTrampolinePos - transform.position), Time.deltaTime * 10).y, transform.rotation.z, transform.rotation.w);
+            //transform.rotation = new Quaternion(transform.rotation.x, Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(nextTrampolinePos - transform.position), Time.deltaTime * 10).y, transform.rotation.z, transform.rotation.w);
+            transform.LookAt(new Vector3(nextTrampolinePos.x, transform.position.y, nextTrampolinePos.z));
         }
         IEnumerator MoveForward(Vector3 target)
         {
