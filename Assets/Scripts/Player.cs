@@ -48,13 +48,26 @@ namespace JumpRace
                 else if (touch.phase == TouchPhase.Moved)
                 {
                     swerveAmount = touch.position.x - touchPosX;
-                    RotatePlayer(swerveAmount);
+                    //RotatePlayer(swerveAmount);
+
+                    if (Math.Abs(swerveAmount) > 1f)
+                    {
+                        if (swerveAmount < 0)
+                            RotatePlayer(-1);
+                        else
+                            RotatePlayer(1);
+                    }
                 }
                 else if (touch.phase == TouchPhase.Stationary)
                 {
                     touchPosX = touch.position.x;
                 }
             }
+
+            //GravityEffect();
+        }
+        private void FixedUpdate()
+        {
 
             if (holdingFinger)
             {
@@ -66,12 +79,11 @@ namespace JumpRace
                     LookNextTrampoline();
             }
 
-            //GravityEffect();
         }
 
         private void RotatePlayer(float d)
         {
-            transform.Rotate(Vector3.up * d * turnRate);
+            transform.Rotate(Vector3.up * d * turnRate * Time.deltaTime);
         }
         private void LookNextTrampoline()
         {

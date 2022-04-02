@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class Trampoline : MonoBehaviour
 {
@@ -28,8 +29,10 @@ public class Trampoline : MonoBehaviour
         if (_type == TrampolineType.Movable)
         {
             _animator.Play("LeftRightMove");
+            //MoveAnimation();
         }
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Player"))
@@ -50,4 +53,16 @@ public class Trampoline : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void MoveAnimation()
+    {
+        Vector3[] path = new Vector3[2];
+        path[0] = new Vector3(transform.position.x + 1f, transform.position.y, transform.position.z);
+        path[1] = new Vector3(transform.position.x - 1f, transform.position.y, transform.position.z);
+        //path[2] = new Vector3(transform.position.x + 1f, transform.position.y, transform.position.z);
+
+        transform.position = path[1];
+        transform.DOPath(path, 2.5f)
+            //.SetEase(Ease.Linear)
+            .SetLoops(-1);
+    }
 }
