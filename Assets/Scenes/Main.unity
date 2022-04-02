@@ -13071,7 +13071,7 @@ MonoBehaviour:
   - {fileID: 2947166090775760246, guid: 92e482cb7d87dce4182f3bdaa0450ee3, type: 3}
   - {fileID: 2947166090775760246, guid: 1b4d1cafc3da06e4b93d189f3d4adf58, type: 3}
   _levelIndex: 2
-  _forceLevel: 1
+  _forceLevel: 0
 --- !u!4 &2054261350
 Transform:
   m_ObjectHideFlags: 0
